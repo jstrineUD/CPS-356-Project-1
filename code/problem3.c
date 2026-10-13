@@ -37,7 +37,7 @@ int dequeue(struct CPU *cpu) {
     return index;
 }
 
-int main(void) {
+int problem3(void) {
     int cpuCount, processCount;
     struct Process processes[MAX_PROCESSES];
     struct CPU cpus[MAX_CPUS];
@@ -50,7 +50,7 @@ int main(void) {
     int completed = 0;
     int time = 0;
 
-    printf("Enter number of CPUs: ");
+    printf("\n\nEnter number of CPUs: ");
     if (scanf("%d", &cpuCount) != 1 ||
         cpuCount < 2 || cpuCount > 8) {
         printf("Invalid CPU count.\n");

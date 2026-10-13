@@ -10,4 +10,6 @@ add_executable(code main.c
         helpers.h
         problem2.c
         problem2.h
+        problem3.c
+        problem3.h
 )
