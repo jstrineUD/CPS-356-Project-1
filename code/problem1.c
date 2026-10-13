@@ -57,7 +57,9 @@ void problemOne() {
     //calls to all the scheduler methods, these methods then output their data into the console for analysis
     firstComeFirstServed(head, processCount);
     shortestJobFirst(head, processCount);
+    randomSchedule(head, processCount);
     shortestTimeToCompletionFirst(head, processCount);
+
 
     struct Node *currNode = head;
 
@@ -400,5 +402,66 @@ void roundRobin(struct Node *head, int count) {
 
     printPreemptiveGanttChart(&algo, head, count);
     freeQueue(&callStack);
+    freeQueue(algo.queue);
+}
+
+void randomSchedule(struct Node* head, int count) {
+    int randomQueue[count];
+    for (int i = 0; i < count; i++) {
+        randomQueue[i] = i + 1;
+    }
+
+    for (int i = count -1; i > 0; i--) {
+        int indexToShuffle = rand() % count;
+
+        int j = randomQueue[i];
+        randomQueue[i] = randomQueue[indexToShuffle];
+        randomQueue[indexToShuffle] = j;
+    }
+
+    struct Queue queue = {
+        .size = 0,
+        .front = NULL,
+        .rear = NULL
+    };
+
+    struct Algorithm algo = {
+        .queue = &queue,
+        .timeElapsed = 0,
+        .totalResponseTime = 0,
+        .totalTurnaroundTime = 0,
+        .name = "Random"
+    };
+
+    for (int i = 0; i < count; i++) {
+        struct Node *currNode = head;
+        struct Node *selected = NULL;
+
+        while (currNode != NULL) {
+            if (currNode->process->arrival_time <= algo.timeElapsed && currNode->process->pid ==  randomQueue[i]) {
+                    selected = currNode;
+                break;
+            }
+            currNode = currNode->next;
+        }
+        if (selected == NULL) {
+            break;
+        }
+
+        struct QueueNode *newNode = malloc(sizeof(struct QueueNode));
+        newNode->process = *selected->process;
+        newNode->next = NULL;
+
+        if (algo.queue->size == 0) {
+            algo.queue->front = newNode;
+            algo.queue->rear = newNode;
+        } else {
+            algo.queue->rear->next = newNode;
+            algo.queue->rear = newNode;
+        }
+        algo.queue->size++;
+        algo.timeElapsed += selected->process->run_time;
+    }
+    printGanttChart(&algo);
     freeQueue(algo.queue);
 }
