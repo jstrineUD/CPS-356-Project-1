@@ -8,4 +8,6 @@ add_executable(code main.c
         problem1.c
         problem1.h
         helpers.h
+        problem2.c
+        problem2.h
 )
