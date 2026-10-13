@@ -55,11 +55,11 @@ void problemOne() {
     }
 
     //calls to all the scheduler methods, these methods then output their data into the console for analysis
-    // firstComeFirstServed(head, processCount);
-    // shortestJobFirst(head, processCount);
-    // shortestTimeToCompletionFirst(head, processCount);
-
+    firstComeFirstServed(head, processCount);
+    shortestJobFirst(head, processCount);
     randomSchedule(head, processCount);
+    shortestTimeToCompletionFirst(head, processCount);
+
 
     struct Node *currNode = head;
 
@@ -70,7 +70,7 @@ void problemOne() {
         currNode->process->isQueued = 0;
         currNode = currNode->next;
     }
-    // roundRobin(head, processCount);
+    roundRobin(head, processCount);
 
     //frees our data now that we've completed our analysis
     while (head != NULL) {
